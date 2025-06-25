@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Cart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="fixed top-4 right-4">
+        <a href="/"
+           class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center justify-center space-x-2"
+        >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+            </svg>
+            <span>Back to Start</span>
+        </a>
+    </div>
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-black mb-2">Welcome!</h1>
+                <p class="text-gray">Scan your clothing items to see their environmental impact</p>
+            </div>
+            <div class="mb-6 opacity-0">
+                <label for="qr-input" class="block text-sm font-medium text-gray-700 mb-1">Scan QR Code:</label>
+                <input id="qr-input" type="text" autocomplete="off" inputmode="none"  class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green" placeholder="Scan or enter QR code here">
+                <div id="scan-status" class="text-xs text-gray-500 mt-1"></div>
+            </div>
+            <!-- Main Content -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Available Items Section -->
+                <div class="bg-white rounded-lg shadow-lg p-6  ">
+                    <h2 class="text-xl font-semibold text-black mb-4">Available Items</h2>
+                    <div id="items-container" class="space-y-3 max-h-[30vh] overflow-y-auto">
+                        <!-- Items will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Cart Section -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h2 class="text-xl font-semibold text-black mb-4">Your Cart</h2>
+                    <div id="cart-container" class="min-h-[200px]">
+                        <div id="empty-cart" class="text-center text-gray-500 py-8">
+                            <p>No items in cart</p>
+                            <p class="text-sm">Scan items to add them to your cart</p>
+                        </div>
+                        <div id="cart-items" class="space-y-3" style="display: none;">
+                            <!-- Cart items will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Cart Summary -->
+                    <div id="cart-summary" class="border-t pt-4 mt-4" style="display: none;">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="font-semibold">Total Items:</span>
+                            <span id="total-items" class="font-bold text-green">0</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="font-semibold">Total Weight:</span>
+                            <span id="total-weight" class="font-bold text-green">0g</span>
+                        </div>
+                        <button id="continue-btn" class="w-full bg-green hover-green text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green focus:ring-offset-2">
+                            Continue
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Item Analysis Modal -->
+    <div id="item-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50" style="display: none;">
+        <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-8 relative">
+            <button id="close-modal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
+            <div id="modal-content">
+                <!-- Item details will be injected here -->
+            </div>
+        </div>
+    </div>
+    <script>
+        window.CLOTHING_ITEMS = JSON.parse('{{ clothing_items|tojson|safe }}');
+    </script>
+    <script src="{{ url_for('static', filename='js/scan.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+[
+  {
+    "qr_code": "RESERVED001",
+    "item_name": "Reserved Shirt",
+    "brand": "Reserved",
+    "category": "shirt",
+    "weight_grams": 194,
+    "created_date": "2025-06-24 10:46:02",
+    "materials": [
+      {
+        "material_name": "cotton",
+        "percentage": 100,
+        "impacts": {
+          "water_usage": 2700,
+          "carbon_footprint": 5.9,
+          "energy_usage": 55
+        },
+        "calculated_impact": {
+          "water_usage": 523.8,
+          "carbon_footprint": 1.1446,
+          "energy_usage": 10.67
+        }
+      }
+    ],
+    "total_impact": {
+      "water_usage": 523.8,
+      "carbon_footprint": 1.1446,
+      "energy_usage": 10.67
+    }
+  },
+  {
+    "qr_code": "PGJEANS001",
+    "item_name": "PageOne Jeans",
+    "brand": "pageone",
+    "category": "pants",
+    "weight_grams": 534,
+    "created_date": "2025-06-24 10:50:12",
+    "materials": [
+      {
+        "material_name": "cotton",
+        "percentage": 98,
+        "impacts": {
+          "water_usage": 2700,
+          "carbon_footprint": 5.9,
+          "energy_usage": 55
+        },
+        "calculated_impact": {
+          "water_usage": 1414.44,
+          "carbon_footprint": 3.0816,
+          "energy_usage": 28.74
+        }
+      },
+      {
+        "material_name": "elastane",
+        "percentage": 2,
+        "impacts": {},
+        "calculated_impact": {
+          "water_usage": 0.0,
+          "carbon_footprint": 0.0,
+          "energy_usage": 0.0
+        }
+      }
+    ],
+    "total_impact": {
+      "water_usage": 1414.44,
+      "carbon_footprint": 3.0816,
+      "energy_usage": 28.74
+    }
+  },
+  {
+    "qr_code": "PBTROUSERS001",
+    "item_name": "Office Trousers",
+    "brand": "Pull & Bear",
+    "category": "pants",
+    "weight_grams": 400,
+    "created_date": "2025-06-24 10:51:39",
+    "materials": [],
+    "total_impact": {
+      "water_usage": 0.0,
+      "carbon_footprint": 0.0,
+      "energy_usage": 0.0
+    }
+  },
+  {
+    "qr_code": "SWEATER001",
+    "item_name": "EverMe Sweater",
+    "brand": "EverMe",
+    "category": "sweatshirt",
+    "weight_grams": 293,
+    "created_date": "2025-06-24 10:54:23",
+    "materials": [
+      {
+        "material_name": "synthetic_blend",
+        "percentage": 100,
+        "impacts": {
+          "water_usage": 6.04017,
+          "carbon_footprint": 4.06366,
+          "energy_usage": 1.11474
+        },
+        "calculated_impact": {
+          "water_usage": 1.77,
+          "carbon_footprint": 1.19,
+          "energy_usage": 0.33
+        }
+      }
+    ],
+    "total_impact": {
+      "water_usage": 1.77,
+      "carbon_footprint": 1.19,
+      "energy_usage": 0.33
+    }
+  },
+  {
+    "qr_code": "TSHIRT001",
+    "item_name": "Pink T-Shirt",
+    "brand": "Gerard Joling",
+    "category": "shirt",
+    "weight_grams": 180,
+    "created_date": "2025-06-24 10:56:32",
+    "materials": [
+      {
+        "material_name": "cotton",
+        "percentage": 100,
+        "impacts": {
+          "water_usage": 2700,
+          "carbon_footprint": 5.9,
+          "energy_usage": 55
+        },
+        "calculated_impact": {
+          "water_usage": 486.0,
+          "carbon_footprint": 1.062,
+          "energy_usage": 9.9
+        }
+      }
+    ],
+    "total_impact": {
+      "water_usage": 486.0,
+      "carbon_footprint": 1.062,
+      "energy_usage": 9.9
+    }
+  },
+  {
+    "qr_code": "GREYSWEATER001",
+    "item_name": "Grey Sweater",
+    "brand": "pageone",
+    "category": "sweatshirt",
+    "weight_grams": 465,
+    "created_date": "2025-06-24 10:57:58",
+    "materials": [
+      {
+        "material_name": "polyester",
+        "percentage": 60,
+        "impacts": {
+          "water_usage": 70,
+          "carbon_footprint": 9.5,
+          "energy_usage": 125
+        },
+        "calculated_impact": {
+          "water_usage": 19.53,
+          "carbon_footprint": 2.66,
+          "energy_usage": 34.88
+        }
+      },
+      {
+        "material_name": "cotton",
+        "percentage": 40,
+        "impacts": {
+          "water_usage": 2700,
+          "carbon_footprint": 5.9,
+          "energy_usage": 55
+        },
+        "calculated_impact": {
+          "water_usage": 50.22,
+          "carbon_footprint": 0.61,
+          "energy_usage": 10.23
+        }
+      }
+    ],
+    "total_impact": {
+      "water_usage": 69.75,
+      "carbon_footprint": 3.27,
+      "energy_usage": 45.11
+    }
+  },
+  {
+    "qr_code": "HMSHIRT001",
+    "item_name": "H&M T-Shirt",
+    "brand": "H&M",
+    "category": "shirt",
+    "weight_grams": 109,
+    "created_date": "2025-06-24 10:58:49",
+    "materials": [
+      {
+        "material_name": "cotton",
+        "percentage": 100,
+        "impacts": {
+          "water_usage": 2700,
+          "carbon_footprint": 5.9,
+          "energy_usage": 55
+        },
+        "calculated_impact": {
+          "water_usage": 294.3,
+          "carbon_footprint": 0.6431,
+          "energy_usage": 6.0
+        }
+      }
+    ],
+    "total_impact": {
+      "water_usage": 294.3,
+      "carbon_footprint": 0.6431,
+      "energy_usage": 6.0
+    }
+  },
+  {
+    "qr_code": "JPSHIRT001",
+    "item_name": "JP Summer Shirt",
+    "brand": "Jean Pascale",
+    "category": "shirt",
+    "weight_grams": 268,
+    "created_date": "2025-06-24 11:00:22",
+    "materials": [
+      {
+        "material_name": "cotton",
+        "percentage": 100,
+        "impacts": {
+          "water_usage": 2700,
+          "carbon_footprint": 5.9,
+          "energy_usage": 55
+        },
+        "calculated_impact": {
+          "water_usage": 723.6,
+          "carbon_footprint": 1.5812,
+          "energy_usage": 14.74
+        }
+      }
+    ],
+    "total_impact": {
+      "water_usage": 723.6,
+      "carbon_footprint": 1.5812,
+      "energy_usage": 14.74
+    }
+  },
+  {
+    "qr_code": "PGSHIRT001",
+    "item_name": "Terracotta Shirt",
+    "brand": "pageone",
+    "category": "shirt",
+    "weight_grams": 131,
+    "created_date": "2025-06-24 11:01:52",
+    "materials": [
+      {
+        "material_name": "cotton",
+        "percentage": 100,
+        "impacts": {
+          "water_usage": 2700,
+          "carbon_footprint": 5.9,
+          "energy_usage": 55
+        },
+        "calculated_impact": {
+          "water_usage": 353.7,
+          "carbon_footprint": 0.7759,
+          "energy_usage": 7.2
+        }
+      }
+    ],
+    "total_impact": {
+      "water_usage": 353.7,
+      "carbon_footprint": 0.7759,
+      "energy_usage": 7.2
+    }
+  }
+] 

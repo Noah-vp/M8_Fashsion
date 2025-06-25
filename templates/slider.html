@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/colors.css') }}">
+    <style>
+        .slider-container {
+            transition: all 0.3s ease-in-out;
+        }
+        .slider-thumb {
+            transition: all 0.1s ease;
+        }
+        .component {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease-in-out;
+        }
+        .component.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .impact-fill {
+            transition: width 0.3s ease;
+        }
+        .impact-description {
+            transition: color 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+    <div class="fixed top-4 right-4">
+        <a href="/"
+           class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center justify-center space-x-2"
+        >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+            </svg>
+            <span>Back to Start</span>
+        </a>
+    </div>
+    <div class="w-full max-w-md">
+        
+        <!-- Selection Popup Component -->
+        <div id="selection-popup" class="component active">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <div class="text-center mb-8">
+                    <h1 class="text-2xl font-bold text-black mb-2">Fashion Sustainability</h1>
+                    <p class="text-gray">Choose your slider type</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <button 
+                        onclick="showComponent('manual-slider')"
+                        class="w-full bg-green hover-green text-white font-medium py-4 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green focus:ring-offset-2 flex items-center justify-center space-x-3"
+                    >
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
+                        </svg>
+                        <span>Manual Slider</span>
+                    </button>
+                    
+                    <button 
+                        onclick="showComponent('bluetooth-slider')"
+                        class="w-full bg-gray hover-gray text-black font-medium py-4 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray focus:ring-offset-2 flex items-center justify-center space-x-3"
+                    >
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path>
+                        </svg>
+                        <span>Bluetooth Slider</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manual Slider Component -->
+        <div id="manual-slider" class="component">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <div class="flex items-center justify-between mb-8">
+                    <h1 class="text-2xl font-bold text-black">Fashion Sustainability Score</h1>
+                    <button 
+                        onclick="showComponent('selection-popup')"
+                        class="text-gray hover:text-black transition-colors duration-200"
+                    >
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="space-y-6">
+                    <!-- Question -->
+                    <div class="text-center">
+                        <h2 class="text-lg font-semibold text-black mb-4">What do you think your personal sustainability score is when it comes to fashion?</h2>
+                        <p class="text-gray text-sm italic">On a scale from 0% (I only buy clothes that are harmful to the environment) to 100% (I shop sustainably and know how to maintain my clothing), where do you see yourself?</p>
+                    </div>
+                    
+                    <!-- Slider Form -->
+                    <form action="{{ url_for('submit_score', user_id=user_id) }}" method="POST">
+                        <div>
+                            <label class="block text-sm font-medium text-black mb-4">Current Score: <span id="slider-value">50</span>%</label>
+                            <div class="relative">
+                                <input 
+                                    type="range" 
+                                    id="manual-slider-input"
+                                    name="score"
+                                    min="0" 
+                                    max="100" 
+                                    value="50"
+                                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider-thumb"
+                                    oninput="updateSliderValue(this.value)"
+                                >
+                            </div>
+                            
+                            <!-- Impact Description -->
+                            <div class="mt-4">
+                                <p id="impact-description" class="impact-description text-sm font-medium text-center">
+                                    Good. Moderate environmental impact.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button 
+                            type="submit"
+                            class="w-full bg-green hover-green text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green focus:ring-offset-2"
+                        >
+                            Next
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bluetooth Slider Component -->
+        <div id="bluetooth-slider" class="component">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <div class="flex items-center justify-between mb-8">
+                    <h1 class="text-2xl font-bold text-black">Bluetooth Slider</h1>
+                    <button 
+                        onclick="showComponent('selection-popup')"
+                        class="text-gray hover:text-black transition-colors duration-200"
+                    >
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="text-center space-y-6">
+                    <div class="w-20 h-20 mx-auto bg-gray rounded-full flex items-center justify-center">
+                        <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                    </div>
+                    
+                    <div>
+                        <h2 class="text-xl font-semibold text-black mb-2">Under Development</h2>
+                        <p class="text-gray">Bluetooth slider functionality is currently being developed. Please check back later.</p>
+                    </div>
+                    
+                    <button 
+                        onclick="showComponent('selection-popup')"
+                        class="w-full bg-green hover-green text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green focus:ring-offset-2"
+                    >
+                        Go Back
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/slider.js') }}"></script>
+    <script>
+        window.USER_ID = "{{ user_id }}";
+    </script>
+</body>
+</html>
