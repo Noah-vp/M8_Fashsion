@@ -3,6 +3,7 @@ import os
 import json
 import serial # type: ignore
 from utils.records_management import set_username, set_value, get_value, get_clothing_items
+from utils.calc import get_persona_score
 import threading
 import time
 from multiprocessing import Process
@@ -79,11 +80,14 @@ def factory(user_id):
     factory_impact = get_value(user_id, "factory_impact")
     print(f"Factory impact: {factory_impact}")
     # Refactor into a different format
-    command = f"{factory_impact['water_usage']}|{factory_impact['carbon_footprint']}"
+    command = f"{int(factory_impact['water_usage'])}|{int(factory_impact['carbon_footprint'])}"
     print(f"Command: {command}")
 
     # Send the command to the factory machine
-    ser = serial.Serial('COM15', 9600)
+    ser = serial.Serial('COM15', 115200)
+    ser.write(command.encode())
+    ser.close()
+    ser = serial.Serial('COM17', 115200)
     ser.write(command.encode())
     ser.close()
 
@@ -136,8 +140,24 @@ def submit_disposal(user_id):
 
 @app.route('/results/<user_id>')
 def results(user_id):
-
-    return render_template('results.html', user_id=user_id)
+    # Read the json file with the user_id
+    with open(f"db/users/{user_id}.json", "r") as f:
+        data = json.load(f)
+    # Calculate the persona score
+    persona, score = get_persona_score(data)
+    # Save the persona score to the database
+    set_value(user_id, persona, "persona")
+    set_value(user_id, score, "persona_score")
+    total_water_usage = get_value(user_id, "factory_impact")["water_usage"] + float(get_value(user_id, "washing_machine_impact")[1])
+    washing_kWh = float(get_value(user_id, "washing_machine_impact")[0])
+    total_carbon_footprint = get_value(user_id, "factory_impact")["carbon_footprint"]
+    # Create command
+    command = f"{int(total_water_usage)} {int(washing_kWh)} {int(total_carbon_footprint)} {persona}"
+    # Send the command to the disposal machine
+    ser = serial.Serial('COM18', 9600)
+    ser.write(command.encode())
+    ser.close()
+    return render_template('results.html', user_id=user_id, persona=persona, score=score)
 
 def run_washing_machine():
     """Function to run the washing machine visualization in a separate process"""
@@ -157,14 +177,14 @@ if __name__ == '__main__':
     # p2 = Process(target=run_counter)
     # p2.start()
 
-    # try:
+    try:
         # Start Flask app (disable reloader to avoid issues with multiprocessing)
-    app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=False, ssl_context=("cert.pem", "key.pem"))
-    # finally:
+        app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=False, ssl_context=("cert.pem", "key.pem"))
+    finally:
         # Ensure PyGame processes are terminated when Flask exits
-        # print("Terminating processes...")
-        # p.terminate()
-        # p2.terminate()
-        # p.join()
-        # p2.join()
-        # print("Cleanup complete")
+        print("Terminating processes...")
+        p.terminate()
+        p2.terminate()
+        p.join()
+        p2.join()
+        print("Cleanup complete")
