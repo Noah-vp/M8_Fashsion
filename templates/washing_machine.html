@@ -34,7 +34,6 @@
                     <br>
                     The true cost of fashion goes beyond what you see!
                 </p>
-                <a href="/disposal/{{ user_id }}" id="continue-btn" class="inline-block mt-8 px-8 py-3 bg-green-600 text-white font-semibold rounded-lg shadow hover:bg-green-700 transition">Continue</a>
             </div>
         </div>
     </div>
@@ -42,7 +41,10 @@
 </body>
 <script>
     fetch(`/washing_machine/{{ user_id }}/submit`, {
-        method: 'GET'
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
     .then(response => response.json())
     .then(data => {

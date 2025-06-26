@@ -49,3 +49,12 @@ def get_clothing_items():
     with open(filename, "r") as f:
         clothing_items = json.load(f)
     return clothing_items
+
+def get_value(user_id, key):
+    filename = f"db/users/{user_id}.json"
+    with open(filename, "r") as f:
+        user_data = json.load(f)
+    if key in user_data:
+        return user_data[key]
+    else:
+        return None

@@ -21,8 +21,15 @@ gif = gif_pygame.load(os.path.join(os.path.dirname(__file__), "assets", "water2d
 font = pygame.font.Font(None, 36)
 
 # Initialize serial connection
-ser = serial.Serial('COM7', 9600, timeout=1)
-time.sleep(2)  # Wait for connection to establish
+ser = None
+try:
+    ser = serial.Serial('COM12', 9600, timeout=1)
+    time.sleep(2)  # Wait for connection to establish
+    print("Serial connection established on COM12")
+except Exception as e:
+    print(f"Warning: Could not connect to serial port COM12: {e}")
+    print("PyGame visualization will run without serial communication")
+    ser = None
 
 # Main game loop
 running = True
@@ -30,6 +37,7 @@ clock = pygame.time.Clock()
 
 water_height = 0
 impact_data = None 
+update_km = False
 
 # Water fill boundaries
 WATER_Y_MIN = 200  # Top (full)
@@ -65,18 +73,23 @@ def calculate_washing_impact(cycles_per_week, temp):
     total_kwh = energy_per_cycle[temp] * cycles_per_year
     total_liters = water_per_cycle * cycles_per_year
     equivalent_km = total_kwh / car_kwh_per_km
+    current_km = 0
 
     return {
         "liters": round(total_liters, 2),
-        "km": round(equivalent_km, 1)
+        "km": round(equivalent_km, 1),
+        "energy_usage": round(total_kwh, 2),
     }
 
 def decode_command(command):
-    global impact_data, water_height
+    global impact_data, water_height, update_km
     while True:
         try:
-            with open("lastcommand_washingmachine.txt", "w") as f:
-                f.write(f"{command}")
+            with open("db/lastcommand_wash.txt", "w") as f:
+                if command.startswith("N|"):
+                    f.write(f"N|{impact_data['energy_usage']},{impact_data['liters']}")
+                else:
+                    f.write(f"{command}")
             break
         except IOError:
             time.sleep(0.1)
@@ -93,8 +106,12 @@ def decode_command(command):
                 water_height += 20
     elif command.startswith("N|"):
         print("New user")
-        impact_data = None
         water_height = 0
+        update_km = False
+    elif command.startswith("RESET|"):
+        print("Reset washing machine")
+        water_height = 0
+        update_km = False
     else:
         print(f"Unknown command: {command}")
 
@@ -108,9 +125,11 @@ def draw_guide_lines():
         screen.blit(label, label_rect)
 
 def display_final_message():
+    
     text = font.render(f"Your washing habits use {(int(impact_data['liters'])/1000):.2f}k liters of water per year", True, (0,0,0))
     text_rect = text.get_rect(center=(screen.get_width()//2, screen.get_height()//2))
     screen.blit(text, text_rect)
+    
 
 def is_water_full():
     global impact_data, water_height
@@ -119,6 +138,7 @@ def is_water_full():
         liters_to_pixels = impact_data['liters'] / 35000 * WATER_PIXEL_RANGE
         return water_height >= liters_to_pixels
     return False
+
 
 while True:
     for event in pygame.event.get():
@@ -155,9 +175,19 @@ while True:
         scaled_gif = pygame.transform.scale(gif.blit_ready(), (gif_width, gif_height))
         # Blit the GIF at the top of the water rectangle
         screen.blit(scaled_gif, (0, current_y - GIF_OFFSET))
-
     if impact_data and is_water_full(): 
         display_final_message()
+        if not update_km:
+            current_km = 0
+            with open("db/total_km.txt", "r") as f:
+                current_km = int(f.read())
+            with open("db/total_km.txt", "w") as f:
+                print(f"Adding {impact_data['km']} to {current_km}")
+                f.write(f"{int(current_km + impact_data['km'])}")
+            update_km = True
+            ser2 = serial.Serial('COM13', 9600, timeout=1)
+            ser2.write(f"E|{impact_data['km']}".encode())
+            ser2.close()
     elif impact_data:
         draw_guide_lines()
 
