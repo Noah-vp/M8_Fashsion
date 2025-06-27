@@ -1,0 +1,17 @@
+{
+    "user_id": "aa82a51c-0b3a-4d6e-bed1-dc1b75c31df4",
+    "username": "Daan",
+    "predicted_score": "14",
+    "factory_impact": {
+        "carbon_footprint": 2.7258,
+        "energy_usage": 25.41,
+        "water_usage": 1247.4
+    },
+    "washing_machine_impact": [
+        "39.0",
+        "3148.08"
+    ],
+    "disposal": "Donation",
+    "persona": 5,
+    "persona_score": 12.97
+}

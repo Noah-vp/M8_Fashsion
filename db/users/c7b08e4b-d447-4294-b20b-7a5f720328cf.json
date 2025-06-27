@@ -1,0 +1,17 @@
+{
+    "user_id": "c7b08e4b-d447-4294-b20b-7a5f720328cf",
+    "username": "noah",
+    "predicted_score": "0",
+    "factory_impact": {
+        "carbon_footprint": 0.7759,
+        "energy_usage": 7.2,
+        "water_usage": 353.7
+    },
+    "washing_machine_impact": [
+        "6.24",
+        "3148.08"
+    ],
+    "disposal": "Recycle",
+    "persona": 1,
+    "persona_score": 2.13
+}

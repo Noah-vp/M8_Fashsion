@@ -1,0 +1,17 @@
+{
+    "user_id": "c9f497d3-068f-4c5d-b36f-87d1f67043d3",
+    "username": "szymon",
+    "predicted_score": "26",
+    "factory_impact": {
+        "carbon_footprint": 3.0816,
+        "energy_usage": 28.74,
+        "water_usage": 1414.44
+    },
+    "washing_machine_impact": [
+        "395.2",
+        "12592.32"
+    ],
+    "disposal": "Donation",
+    "persona": 2,
+    "persona_score": 31.86
+}

@@ -1,0 +1,17 @@
+{
+    "user_id": "a8cbad73-ecf3-4033-b54d-cf2d1e2a0afa",
+    "username": "hothan",
+    "predicted_score": "41",
+    "factory_impact": {
+        "carbon_footprint": 4.4146,
+        "energy_usage": 55.78,
+        "water_usage": 593.55
+    },
+    "washing_machine_impact": [
+        "273.0",
+        "22036.56"
+    ],
+    "disposal": "Donation",
+    "persona": 2,
+    "persona_score": 28.05
+}

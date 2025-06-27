@@ -1,0 +1,17 @@
+{
+    "user_id": "614e182f-021d-4ddf-beae-dcd2b8a6cf0f",
+    "username": "direkdirekdirek",
+    "predicted_score": "67",
+    "factory_impact": {
+        "carbon_footprint": 4.271599999999999,
+        "energy_usage": 29.069999999999997,
+        "water_usage": 1416.21
+    },
+    "washing_machine_impact": [
+        "117.0",
+        "9444.24"
+    ],
+    "disposal": "Recycle",
+    "persona": 4,
+    "persona_score": 30.02
+}

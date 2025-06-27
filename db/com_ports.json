@@ -1,0 +1,9 @@
+{
+    "factory_1": "COM20",
+    "factory_2": "COM21",
+    "washingmachine_buttons": "COM19",
+    "washingmachine_car": "COM18",
+    "disposal": "COM22",
+    "printer": "COM12",
+    "counter": "COM13"
+}

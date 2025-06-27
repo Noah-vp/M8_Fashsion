@@ -14,6 +14,9 @@ app.secret_key = 'your-very-secret-key'  # Use a strong, random value in product
 # First page the user lands on where they can enter their username
 @app.route('/')
 def index():
+    #Open current persona file
+    with open("db/current_persona.txt", "w") as f:
+        f.write("")
     return render_template('index.html')
 
 # Submit username and redirect to slider page
@@ -71,7 +74,7 @@ def submit_scan(user_id):
         total_impact["water_usage"] += item["total_impact"]["water_usage"]
     # Save the total impact to the database
     set_value(user_id, total_impact, "factory_impact")
-    return redirect(url_for('factory', user_id=user_id))
+    return jsonify({"ok": True})
 
 # Page where the user is guided to the factory
 @app.route('/factory/<user_id>')
@@ -84,12 +87,14 @@ def factory(user_id):
     print(f"Command: {command}")
 
     # Send the command to the factory machine
-    ser = serial.Serial('COM15', 115200)
-    ser.write(command.encode())
-    ser.close()
-    ser = serial.Serial('COM17', 115200)
-    ser.write(command.encode())
-    ser.close()
+    with open("db/com_ports.json", "r") as f:
+        com_ports = json.load(f)
+        ser = serial.Serial(com_ports["factory_1"], 115200)
+        ser.write(command.encode())
+        ser.close()
+        ser = serial.Serial(com_ports["factory_2"], 115200)
+        ser.write(command.encode())
+        ser.close()
 
     return render_template('factory.html', user_id=user_id, factory_impact=factory_impact)
 
@@ -126,7 +131,9 @@ def disposal(user_id):
 @app.route('/disposal/<user_id>/submit', methods=['GET'])
 def submit_disposal(user_id):
     print("Starting disposal selection")
-    ser = serial.Serial('COM16', 9600)
+    with open("db/com_ports.json", "r") as f:
+        com_ports = json.load(f)
+    ser = serial.Serial(com_ports["disposal"], 9600)
     while True:
         line = ser.readline().decode().strip()
         if line:
@@ -153,10 +160,17 @@ def results(user_id):
     total_carbon_footprint = get_value(user_id, "factory_impact")["carbon_footprint"]
     # Create command
     command = f"{int(total_water_usage)} {int(washing_kWh)} {int(total_carbon_footprint)} {persona}"
-    # Send the command to the disposal machine
-    ser = serial.Serial('COM18', 9600)
+    # Send the command to the printer machine
+    with open("db/com_ports.json", "r") as f:
+        com_ports = json.load(f)
+    ser = serial.Serial(com_ports["printer"], 9600)
     ser.write(command.encode())
     ser.close()
+    
+    # Write persona number to file for the display
+    with open("db/current_persona", "w") as f:
+        f.write(str(persona))
+    
     return render_template('results.html', user_id=user_id, persona=persona, score=score)
 
 def run_washing_machine():
@@ -169,13 +183,21 @@ def run_counter():
     import counter
     # The counter module will run its main loop when imported
 
-if __name__ == '__main__':
-    # Start PyGame visualization in a separate process
-    # p = Process(target=run_washing_machine)
-    # p.start()
+def run_persona_display():
+    """Function to run the persona display in a separate process"""
+    import personadisplay
+    # The personadisplay module will run its main loop when imported
 
-    # p2 = Process(target=run_counter)
-    # p2.start()
+if __name__ == '__main__':
+    # # Start PyGame visualization in a separate process
+    p = Process(target=run_washing_machine)
+    p.start()
+
+    p2 = Process(target=run_counter)
+    p2.start()
+    
+    p3 = Process(target=run_persona_display)
+    p3.start()
 
     try:
         # Start Flask app (disable reloader to avoid issues with multiprocessing)
@@ -185,6 +207,8 @@ if __name__ == '__main__':
         print("Terminating processes...")
         p.terminate()
         p2.terminate()
+        p3.terminate()
         p.join()
         p2.join()
+        p3.join()
         print("Cleanup complete")

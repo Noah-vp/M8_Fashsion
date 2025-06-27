@@ -4,7 +4,7 @@ import os
 import gif_pygame # type: ignore    
 import serial # type: ignore
 import time
-
+import json
 
 # Initialize Pygame
 pygame.init()
@@ -23,11 +23,13 @@ font = pygame.font.Font(None, 36)
 # Initialize serial connection
 ser = None
 try:
-    ser = serial.Serial('COM12', 9600, timeout=1)
-    time.sleep(2)  # Wait for connection to establish
-    print("Serial connection established on COM12")
+    with open("db/com_ports.json", "r") as f:
+        com_ports = json.load(f)
+        ser = serial.Serial(com_ports["washingmachine_buttons"], 9600, timeout=1)
+        time.sleep(2)  # Wait for connection to establish
+        print(f"Serial connection established on {com_ports['washingmachine_buttons']}")
 except Exception as e:
-    print(f"Warning: Could not connect to serial port COM12: {e}")
+    print(f"Warning: Could not connect to serial port {com_ports['washingmachine_buttons']}: {e}")
     print("PyGame visualization will run without serial communication")
     ser = None
 
@@ -185,7 +187,9 @@ while True:
                 print(f"Adding {impact_data['km']} to {current_km}")
                 f.write(f"{int(current_km + impact_data['km'])}")
             update_km = True
-            ser2 = serial.Serial('COM13', 9600, timeout=1)
+            with open("db/com_ports.json", "r") as f:
+                com_ports = json.load(f)
+            ser2 = serial.Serial(com_ports["washingmachine_car"], 9600, timeout=1)
             ser2.write(f"E|{impact_data['km']}".encode())
             ser2.close()
     elif impact_data:

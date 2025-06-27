@@ -13,11 +13,11 @@ def get_persona_score(data):
     disposal = data['disposal']
 
 
-    # Max and Min values
-    min_carbon, max_carbon = 1.419, 7.93
-    min_water, max_water = 71.52, 2661.84
-    min_kWh, max_kWh = 0, 1086.8
-    min_litres, max_litres = 0, 45000
+    # Max and Min values based on actual user data
+    min_carbon, max_carbon = 2.252, 8.4768
+    min_water, max_water = 487.77, 2451.15
+    min_kWh, max_kWh = 39.0, 1086.8
+    min_litres, max_litres = 3148.08, 34628.88
 
 
     # Map function
@@ -38,6 +38,7 @@ def get_persona_score(data):
 
     def give_persona():
         score = round((carbon_mapped + water_mapped + washing_kWh_mapped + washing_litres_mapped + disposal_mapped) / 5, 2)
+        score = 100 - score
         if 0 <= score <= 20: return 1
         elif 20 < score <= 40: return 2
         elif 40 < score <= 60: return 3

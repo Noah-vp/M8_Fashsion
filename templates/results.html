@@ -31,9 +31,9 @@
                 <!-- Score Section -->
                 <div class="text-center mb-8">
                     <h2 class="text-2xl font-semibold text-black mb-4">Your Sustainability Score</h2>
-                    <div class="text-5xl font-bold text-green mb-4">{{ score }}%</div>
+                    <div class="text-5xl font-bold text-green mb-4">{{ 100 - score }}%</div>
                     <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
-                        <div class="bg-green h-4 rounded-full transition-all duration-300" style="width: {{ score }}%"></div>
+                        <div class="bg-green h-4 rounded-full transition-all duration-300" style="width: {{ 100 - score }}%"></div>
                     </div>
                 </div>
 
